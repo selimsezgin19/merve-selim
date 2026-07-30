@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davetiye</title>
+    <!-- Serif Font için Google Fonts Entegrasyonu -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Arka plan görseli */
+            background: url('arkaplan-gorseli.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Şeffaf Beyaz Kart Efekti */
+        .card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 35px 25px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        h1, h2 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #9e7b4f; /* Altın/Toprak Tonu */
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+
+        p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Müzik Butonu (Sabit Pozisyon) */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #9e7b4f;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 18px;
+        }
+
+        /* Geri Sayım Sayacı */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .time-box {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            min-width: 65px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+            .time-box span {
+                display: block;
+                font-weight: bold;
+                font-size: 1.2rem;
+                color: #333;
+            }
+
+            .time-box label {
+                font-size: 0.75rem;
+                color: #9e7b4f;
+                text-transform: uppercase;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- Arka Plan Ses Dosyası -->
+    <audio id="bg-music" loop>
+        <source src="muzik.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Müzik Kontrol Butonu -->
+    <button class="music-btn" onclick="toggleMusic()" id="music-toggle">🎵</button>
+
+    <!-- Giriş Kartı -->
+    <div class="card">
+        <h1>Nişanlanıyoruz!</h1>
+        <p>Birlikte yeni bir hayata adım atarken, bu heyecanımızı ve mutluluğumuzu sevdiklerimizle paylaşmak istiyoruz.</p>
+    </div>
+
+    <!-- Geri Sayım Kartı -->
+    <div class="card">
+        <h2>Büyük Güne Kalan Zaman</h2>
+        <div class="countdown">
+            <div class="time-box"><span id="days">00</span><label>Gün</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Saat</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Dakika</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Saniye</label></div>
+        </div>
+    </div>
+
+    <script>
+    // --- 1. Müzik Çalar Mantığı ---
+    const audio = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-toggle');
+
+    // Tarayıcı güvenlik politikaları gereği (Autoplay Restrictions),
+    // sesin otomatik başlaması için kullanıcının sayfaya ilk dokunuşu/tıklaması yakalanır.
+    document.body.addEventListener('click', function startAudio() {
+      audio.play().then(() => {
+        musicBtn.textContent = '🔊';
+      }).catch(e => console.log("Otomatik oynatma engellendi"));
+      document.body.removeEventListener('click', startAudio);
+    }, { once: true });
+
+    function toggleMusic() {
+      if (audio.paused) {
+        audio.play();
+        musicBtn.textContent = '🔊';
+      } else {
+        audio.pause();
+        musicBtn.textContent = '🔇';
+      }
+    }
+
+    // --- 2. Geri Sayım Mantığı ---
+    const targetDate = new Date("Sep 19, 2026 12:00:00").getTime();
+
+    setInterval(() => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        document.getElementById("days").innerText = Math.floor(difference / (1000 * 60 * 60 * 24));
+        document.getElementById("hours").innerText = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("minutes").innerText = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById("seconds").innerText = Math.floor((difference % (1000 * 60)) / 1000);
+      }
+    }, 1000);
+    </script>
+
+</body>
+</html>
