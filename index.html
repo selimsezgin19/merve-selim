@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zehra & Burak - Davetiye</title>
+    <title>Selim & Merve - Davetiye</title>
 
     <!-- Şık Fontlar (Google Fonts) -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
@@ -233,6 +233,9 @@
         // --- 1. Müzik Oynatıcı ---
         const audio = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-toggle');
+
+        // Ses seviyesini ayarlama (0.0 ile 1.0 arasında bir değer verilir)
+        audio.volume = 0.2; // %20 ses seviyesi (varsayılan 1.0 yani %100'dür)
 
         // Sayfaya ilk tıklamada müziği başlatır (Tarayıcı engellerine takılmamak için)
         document.body.addEventListener('click', function startAudio() {
